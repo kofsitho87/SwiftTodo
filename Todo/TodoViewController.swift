@@ -13,17 +13,23 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
     }
     
+    var delegate: MainViewController!
+    
     let service = ApiService.shared
     let cellId = "cellId"
     
     var todos = [Todo]() {
         didSet {
+            todoGroup.count = todos.count
+                
             self.unCTodos = self.todos.filter({ $0.completed == false })
             self.cTodos = self.todos.filter({ $0.completed == true })
             
             
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                
+                self.delegate.updateTodoGroupCount(tgroup: self.todoGroup, state: .update)
             }
             
             print("change \(cTodos.count)")
@@ -129,7 +135,10 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
         guard let gid = todoGroup.id else {return true}
         service.addTodo(gid: gid, content: text) { (success, todo) in
             if success {
-                guard let t = todo else {return}
+                guard let t = todo else {
+                    self.showAlert("투두 추가 실패")
+                    return
+                }
                 self.addTodoTextField.text = nil
                 self.todos.append(t)
                 
@@ -146,6 +155,15 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         return true
+    }
+    
+    func showAlert(_ title: String){
+        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "확인", style: .default, handler: nil)
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {

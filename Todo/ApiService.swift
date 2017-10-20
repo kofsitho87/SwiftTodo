@@ -16,6 +16,7 @@ class ApiService: NSObject {
     
     let baseUrl = "http://13.124.218.189:3000/"
     //let baseUrl = "http://localhost:3000/"
+    
     let uid = 1
     var headers : HTTPHeaders = [
         "Accept": "application/json"
@@ -178,7 +179,7 @@ class ApiService: NSObject {
         }
     }
     
-    func createGroup(title: String, completion: @escaping (Bool) -> Void){
+    func createGroup(title: String, completion: @escaping (Bool, Int?) -> Void){
         let url = "todo/group/"
         let params: Parameters = [
             "uid" : self.uid,
@@ -186,7 +187,13 @@ class ApiService: NSObject {
         ]
         
         request(url: url, params: params, method: .post) { (success, json) in
-            completion(success)
+            guard let data = json?["data"].dictionary,
+                let id = data["id"]?.int  else {
+                completion(false, nil)
+                return
+            }
+            
+            completion(success, id)
         }
     }
     

@@ -2,10 +2,24 @@
 import UIKit
 import Cartography
 
-class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+enum StateTodoGroup {
+    case add
+    case delete
+    
+    case update
+}
+
+protocol TodoDelegate {
+    
+    func createTodoGroup(id: Int, _ title: String)
+    
+    func updateTodoGroupCount(tgroup: TGroup, state: StateTodoGroup)
+}
+
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TodoDelegate {
 
     @IBOutlet var addGroupView: UIView!
-    @IBOutlet weak var addListButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var allTodoCountLabel: UILabel!
     
@@ -43,10 +57,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        addListButton.isHidden = true
-        
-        
         setTitleView()
         
         let searchBarItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(loadTodos))
@@ -55,13 +65,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         tableView.refreshControl = refrshCtrl
         
-        addListButton.addTarget(self, action: #selector(createTodoGroupAction), for: .touchUpInside)
         
         loadTodos()
     }
     
     func moveAddGroup(){
         let vc = UIStoryboard(name: "CreateGroup", bundle: nil).instantiateInitialViewController() as! CreateGroupViewController
+        
+        vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -150,6 +161,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         let vc = UIStoryboard(name: "Todo", bundle: nil).instantiateInitialViewController() as! TodoViewController
         
         vc.todoGroup = currentTG
+        vc.delegate = self
         
         navigationController?.pushViewController(vc, animated: true)
         
@@ -181,6 +193,39 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         
         return [deleteAcation]
+    }
+    
+    func createTodoGroup(id: Int, _ title: String){
+        let index = todoGroups.count
+        
+        let todoGroup = TGroup()
+        todoGroup.id = id
+        todoGroup.title = title
+        todoGroup.count = 0
+        todoGroups.append(todoGroup)
+        
+        DispatchQueue.main.async {
+            
+            let indexPath = IndexPath(row: index, section: 0)
+            
+            self.tableView.beginUpdates()
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
+        }
+    }
+    
+    func updateTodoGroupCount(tgroup: TGroup, state: StateTodoGroup){
+        guard let index = todoGroups.index(of: tgroup) else {return}
+        
+        todoGroups[index].count = tgroup.count
+        
+        DispatchQueue.main.async {
+            let indexPath = IndexPath(row: index, section: 0)
+            
+            self.tableView.beginUpdates()
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            self.tableView.endUpdates()
+        }
     }
 }
 

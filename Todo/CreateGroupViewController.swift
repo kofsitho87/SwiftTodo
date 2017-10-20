@@ -19,6 +19,8 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
     
     let apiService = ApiService.shared
     
+    var delegate: MainViewController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -40,8 +42,14 @@ class CreateGroupViewController: UIViewController, UITextFieldDelegate {
     func createGroup(){
         guard let title = textField.text else {return}
         
-        apiService.createGroup(title: title) { (success) in
+        apiService.createGroup(title: title) { (success, id) in
             if success {
+                guard let id = id else {
+                    self.showAlert("실패")
+                    return
+                }
+                self.delegate.createTodoGroup(id: id, title)
+                
                 self.textField.text = nil
                 self.showAlert("성공")
             }else{

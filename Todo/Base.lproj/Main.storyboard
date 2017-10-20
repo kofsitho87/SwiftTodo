@@ -63,26 +63,6 @@
                                         <constraint firstAttribute="trailing" secondItem="5NU-5m-krn" secondAttribute="trailing" constant="10" id="tEG-E1-i57"/>
                                     </constraints>
                                 </view>
-                                <view key="tableFooterView" contentMode="scaleToFill" id="T93-Wi-dbb" userLabel="FooterView">
-                                    <rect key="frame" x="0.0" y="128" width="375" height="57"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7qC-VA-fK0">
-                                            <rect key="frame" x="50" y="0.0" width="275" height="54.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                            <state key="normal" title="+ 목록작성">
-                                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </state>
-                                        </button>
-                                    </subviews>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <constraints>
-                                        <constraint firstAttribute="bottom" secondItem="7qC-VA-fK0" secondAttribute="bottom" constant="2.5" id="1Z8-6G-9FT"/>
-                                        <constraint firstItem="7qC-VA-fK0" firstAttribute="top" secondItem="T93-Wi-dbb" secondAttribute="top" id="SLl-bP-Y1v"/>
-                                        <constraint firstItem="7qC-VA-fK0" firstAttribute="leading" secondItem="T93-Wi-dbb" secondAttribute="leading" constant="50" id="Xoy-wd-Lp1"/>
-                                        <constraint firstAttribute="trailing" secondItem="7qC-VA-fK0" secondAttribute="trailing" constant="50" id="rh2-Bv-tOf"/>
-                                    </constraints>
-                                </view>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cellId" rowHeight="50" id="X5N-Ou-6tD" customClass="TodoListTableViewCell" customModule="Todo" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="78" width="375" height="50"/>
@@ -148,7 +128,6 @@
                     <navigationItem key="navigationItem" id="EcT-aS-qlG"/>
                     <connections>
                         <outlet property="addGroupView" destination="uAD-ON-P5A" id="1TA-yj-odu"/>
-                        <outlet property="addListButton" destination="7qC-VA-fK0" id="PQg-Qw-DnN"/>
                         <outlet property="allTodoCountLabel" destination="5NU-5m-krn" id="VPY-XR-s6s"/>
                         <outlet property="tableView" destination="hOU-X3-hVu" id="DDU-C1-X8t"/>
                     </connections>

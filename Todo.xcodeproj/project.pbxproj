@@ -147,19 +147,16 @@
 		806CE48B1F9751C60021A8C0 /* Todo */ = {
 			isa = PBXGroup;
 			children = (
+				806CE4D61F99BFA90021A8C0 /* Views */,
 				806CE4D31F998D250021A8C0 /* ViewController */,
 				806CE4CE1F9893950021A8C0 /* Components */,
-				806CE4CB1F983D600021A8C0 /* Todo */,
 				806CE4C81F97A93C0021A8C0 /* Storyboard */,
 				806CE4C31F97634C0021A8C0 /* Service */,
 				806CE4BE1F9762550021A8C0 /* Model */,
 				806CE48C1F9751C60021A8C0 /* AppDelegate.swift */,
-				806CE48E1F9751C60021A8C0 /* MainViewController.swift */,
-				806CE4C61F97A9030021A8C0 /* TodoViewController.swift */,
 				806CE4931F9751C60021A8C0 /* Assets.xcassets */,
 				806CE4951F9751C60021A8C0 /* LaunchScreen.storyboard */,
 				806CE4981F9751C60021A8C0 /* Info.plist */,
-				806CE4BA1F9756660021A8C0 /* TodoListTableViewCell.swift */,
 			);
 			path = Todo;
 			sourceTree = "<group>";
@@ -209,14 +206,6 @@
 			name = Storyboard;
 			sourceTree = "<group>";
 		};
-		806CE4CB1F983D600021A8C0 /* Todo */ = {
-			isa = PBXGroup;
-			children = (
-				806CE4CC1F983D7D0021A8C0 /* TodoTableViewCell.swift */,
-			);
-			name = Todo;
-			sourceTree = "<group>";
-		};
 		806CE4CE1F9893950021A8C0 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -228,9 +217,20 @@
 		806CE4D31F998D250021A8C0 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				806CE4C61F97A9030021A8C0 /* TodoViewController.swift */,
+				806CE48E1F9751C60021A8C0 /* MainViewController.swift */,
 				806CE4D41F998D3E0021A8C0 /* CreateGroupViewController.swift */,
 			);
 			name = ViewController;
+			sourceTree = "<group>";
+		};
+		806CE4D61F99BFA90021A8C0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				806CE4BA1F9756660021A8C0 /* TodoListTableViewCell.swift */,
+				806CE4CC1F983D7D0021A8C0 /* TodoTableViewCell.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		D1768D5351FCE2D1E3EE66E8 /* Frameworks */ = {
