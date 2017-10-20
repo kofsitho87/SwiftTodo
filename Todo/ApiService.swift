@@ -14,8 +14,8 @@ class ApiService: NSObject {
     
     static let shared = ApiService()
     
-    //let baseUrl = "http://13.124.218.189:3000/"
-    let baseUrl = "http://localhost:3000/"
+    let baseUrl = "http://13.124.218.189:3000/"
+    //let baseUrl = "http://localhost:3000/"
     let uid = 1
     var headers : HTTPHeaders = [
         "Accept": "application/json"
