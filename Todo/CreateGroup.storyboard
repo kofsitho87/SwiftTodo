@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="mPu-g9-za3">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Create Group View Controller-->
+        <scene sceneID="FLJ-9K-dMg">
+            <objects>
+                <viewController id="mPu-g9-za3" customClass="CreateGroupViewController" customModule="Todo" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Lqu-5S-Ds1"/>
+                        <viewControllerLayoutGuide type="bottom" id="NPC-22-if7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Zfn-9S-qgV">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="그룹이름을 입력해..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Nlr-Wj-Nan">
+                                <rect key="frame" x="15" y="40" width="345" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="MIY-7n-N0M"/>
+                                </constraints>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="mPu-g9-za3" id="Wah-y0-OkT"/>
+                                </connections>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Nlr-Wj-Nan" firstAttribute="leading" secondItem="Zfn-9S-qgV" secondAttribute="leading" constant="15" id="eTX-4f-6cO"/>
+                            <constraint firstAttribute="trailing" secondItem="Nlr-Wj-Nan" secondAttribute="trailing" constant="15" id="hAe-Jj-7Gd"/>
+                            <constraint firstItem="Nlr-Wj-Nan" firstAttribute="top" secondItem="Lqu-5S-Ds1" secondAttribute="bottom" constant="20" id="jJJ-RR-D7R"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="textField" destination="Nlr-Wj-Nan" id="wRV-NE-Bvm"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0io-AL-7Rd" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-354.39999999999998" y="170.46476761619192"/>
+        </scene>
+    </scenes>
+</document>
