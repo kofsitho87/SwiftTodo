@@ -17,6 +17,7 @@ class TodoTableViewCell: UITableViewCell {
     @IBOutlet weak var contentLabelLeftAnchor: NSLayoutConstraint!
     
     var checkBoxDelegate: CheckBox? = nil
+    var todoDelegate: TodoViewController!
     
     lazy var  checkBoxView: CheckBox = {
         let v = CheckBox()
@@ -31,6 +32,17 @@ class TodoTableViewCell: UITableViewCell {
         containerView.layer.borderWidth = 0.7
         
         addCheckBox()
+        
+        
+        importantButton.addTarget(self, action: #selector(changeImportantAction(_:)), for: .touchUpInside)
+    }
+    
+    func changeImportantAction(_ button: UIButton){
+        button.isEnabled = false
+        let tag = button.tag
+        //button.tag = tag == 0 ? 1 : 0
+
+        todoDelegate.changeImportantTodo(state: tag == 1, cell: self)
     }
     
     func addCheckBox(){

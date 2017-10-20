@@ -14,8 +14,8 @@ class ApiService: NSObject {
     
     static let shared = ApiService()
     
-    let baseUrl = "http://13.124.218.189:3000/"
-    //let baseUrl = "http://localhost:3000/"
+    //let baseUrl = "http://13.124.218.189:3000/"
+    let baseUrl = "http://localhost:3000/"
     
     let uid = 1
     var headers : HTTPHeaders = [
@@ -47,35 +47,32 @@ class ApiService: NSObject {
     }
     
     func getTodosFromGid(gid: Int, completion: @escaping (Bool, [Todo]?) -> Void){
+        let url = "todo/getTodos"
         parameters = ["uid": uid, "gid": gid]
         
-        Alamofire.request(baseUrl + "todo/getTodos", method: .post, parameters: parameters, headers: headers)
-            .validate(statusCode: 200..<300)
-            .validate(contentType: ["application/json"])
-            .responseJSON { (response) in
-                switch response.result {
-                case .success:
-                    let json = JSON(data: response.data!)
-                    
-                    guard let todos = json["data"].array else {
-                        completion(false, nil)
-                        return
-                    }
-                    
-                    let newTodos = todos.map({ (_todo) -> Todo in
-                        let todo = Todo()
-                        todo.id = _todo["id"].intValue
-                        todo.gid = _todo["gid"].intValue
-                        todo.content = _todo["content"].stringValue
-                        todo.completed = _todo["completed"].boolValue
-                        return todo
-                    })
-                    
-                    completion(true, newTodos)
-                case .failure(let err):
-                    print(err.localizedDescription)
+        
+        request(url: url, params: parameters, method: .post) { (success, json) in
+            if success {
+                guard let todos = json?["data"].array else {
                     completion(false, nil)
+                    return
                 }
+                
+                let newTodos = todos.map({ (_todo) -> Todo in
+                    let todo = Todo()
+                    todo.id = _todo["id"].intValue
+                    todo.gid = _todo["gid"].intValue
+                    todo.content = _todo["content"].stringValue
+                    todo.completed = _todo["completed"].boolValue
+                    todo.important = _todo["important"].boolValue
+                    return todo
+                })
+                
+                completion(true, newTodos)
+                
+            }else{
+                completion(false, nil)
+            }
         }
     }
     

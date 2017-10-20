@@ -219,6 +219,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         todoGroups[index].count = tgroup.count
         
+        
         DispatchQueue.main.async {
             let indexPath = IndexPath(row: index, section: 0)
             

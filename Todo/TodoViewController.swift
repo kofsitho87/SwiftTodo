@@ -1,7 +1,12 @@
 import UIKit
 import Cartography
 
-class TodoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+
+protocol TodoChageAction {
+    func changeImportantTodo(state: Bool, cell: UITableViewCell)
+}
+
+class TodoViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate, TodoChageAction {
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var addTodoTextField: UITextField!
@@ -21,6 +26,8 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
     var todos = [Todo]() {
         didSet {
             todoGroup.count = todos.count
+            
+            self.todos = todos.sorted(by: { $0.0.id > $0.1.id }).sorted(by: { $0.0.important })
                 
             self.unCTodos = self.todos.filter({ $0.completed == false })
             self.cTodos = self.todos.filter({ $0.completed == true })
@@ -108,6 +115,9 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! TodoTableViewCell
         
+        let importantImg = #imageLiteral(resourceName: "icon-star-fill")
+        let unImportantImg = #imageLiteral(resourceName: "icon-star-empty")
+        
         cell.checkBoxDelegate?.onChange = { [weak self] state in
             guard let strongSelf = self else {return}
             strongSelf.changeCompleteTodo(state: state, indexPath: indexPath)
@@ -117,12 +127,33 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
             let unCTodo = unCTodos[indexPath.row]
             cell.contentLabel.text = unCTodo.content
             
+            
+            if unCTodo.important {
+                cell.importantButton.tag = 1
+                cell.importantButton.setImage(importantImg, for: .normal)
+            }else {
+                cell.importantButton.tag = 0
+                cell.importantButton.setImage(unImportantImg, for: .normal)
+            }
+            
         }else {
             let cTodo = cTodos[indexPath.row]
             cell.contentLabel.text = cTodo.content
+            
+            if cTodo.important {
+                cell.importantButton.tag = 1
+                cell.importantButton.setImage(importantImg, for: .normal)
+            }else {
+                cell.importantButton.tag = 0
+                cell.importantButton.setImage(unImportantImg, for: .normal)
+            }
         }
         
+        cell.importantButton.isEnabled = true
+        
         cell.checkBoxView.state = indexPath.section == 1
+        cell.todoDelegate = self
+        
         
         return cell
     }
@@ -279,6 +310,26 @@ class TodoViewController: UIViewController, UITableViewDelegate, UITableViewData
                 if let index = self.todos.index(of: todo) {
                     self.todos[index] = todo
                 }
+            }
+        }
+    }
+    
+    func changeImportantTodo(state: Bool, cell: UITableViewCell){
+        guard let indexPath = tableView.indexPath(for: cell) else {return}
+        
+        let willState = !state
+        
+        let todo = indexPath.section == 0 ? unCTodos[indexPath.row] : cTodos[indexPath.row]
+        
+        let update: [String : Any] = ["important" : willState]
+        service.changeTodo(id: todo.id, update: update) { (success) in
+            if success {
+                todo.important = willState
+                if let index = self.todos.index(of: todo) {
+                    self.todos[index] = todo
+                }
+            }else{
+                self.showAlert("error")
             }
         }
     }

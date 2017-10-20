@@ -16,4 +16,5 @@ class Todo: NSObject {
     
     var content: String! = ""
     var completed: Bool = false
+    var important: Bool = false
 }
