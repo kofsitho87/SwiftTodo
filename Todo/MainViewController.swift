@@ -19,9 +19,12 @@ protocol TodoDelegate {
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, TodoDelegate {
 
+    @IBOutlet weak var allTodosView: UIView!
+    @IBOutlet weak var starTodosView: UIView!
     @IBOutlet var addGroupView: UIView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var allTodoCountLabel: UILabel!
+    @IBOutlet weak var startCountLabel: UILabel!
     
     let cellId = "cellId"
     var todoGroups = [TGroup]()
@@ -58,6 +61,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         super.viewDidLoad()
         
         setTitleView()
+        setupView()
         
         let searchBarItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(loadTodos))
         let addBarItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(moveAddGroup))
@@ -67,6 +71,22 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         
         loadTodos()
+    }
+    
+    func setupView(){
+        allTodosView.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(moveToTodo))
+        allTodosView.addGestureRecognizer(tapGesture)
+    }
+    
+    func moveToTodo(){
+        //let currentTG = todoGroups[indexPath.row]
+        let vc = UIStoryboard(name: "Todo", bundle: nil).instantiateInitialViewController() as! TodoViewController
+        
+        //vc.todoGroup = currentTG
+        //vc.delegate = self
+        
+        //navigationController?.pushViewController(vc, animated: true)
     }
     
     func moveAddGroup(){
@@ -105,11 +125,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         print("connecting")
         isRequsting = true
-        apiService.getGroups { (success, groups, totalTodos) in
-            if success, let g = groups {
+        apiService.getGroups { (success, groups, data) in
+            if success, let g = groups, let data = data {
                 self.todoGroups = g
                 DispatchQueue.main.async {
-                    self.allTodoCountLabel.text = "\(totalTodos)"
+                    self.allTodoCountLabel.text = "\(String(describing: data["totalTodos"]!))"
+                    self.startCountLabel.text = "\(String(describing: data["importantTodos"]!))"
                     self.tableView.reloadData()
                 }
             }
@@ -164,7 +185,6 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         vc.delegate = self
         
         navigationController?.pushViewController(vc, animated: true)
-        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

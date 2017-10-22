@@ -14,8 +14,8 @@ class ApiService: NSObject {
     
     static let shared = ApiService()
     
-    //let baseUrl = "http://13.124.218.189:3000/"
-    let baseUrl = "http://localhost:3000/"
+    let baseUrl = "http://13.124.218.189:3000/"
+    //let baseUrl = "http://localhost:3000/"
     
     let uid = 1
     var headers : HTTPHeaders = [
@@ -77,15 +77,16 @@ class ApiService: NSObject {
     }
     
     
-    func getGroups(completion: @escaping (Bool, [TGroup]?, Int) -> Void){
+    func getGroups(completion: @escaping (Bool, [TGroup]?, [String: Int]?) -> Void){
         
         let url = "todo/\(uid)/getList"
         request(url: url, params: parameters, method: .get) { (success, json) in
             if success {
                 guard let data = json?["data"].dictionary,
                     let groups = data["groups"]?.array,
-                    let totalTodos = data["totalTodos"]?.int else {
-                        completion(false, nil, 0)
+                    let totalTodos = data["totalTodos"]?.int,
+                    let importantTodos = data["importantTodos"]?.int else {
+                        completion(false, nil, nil)
                         return
                     }
                 
@@ -97,11 +98,12 @@ class ApiService: NSObject {
                     return g
                 })
                 
-                completion(true, newGroups, totalTodos)
+                let countTodos = ["totalTodos": totalTodos, "importantTodos" : importantTodos]
+                completion(true, newGroups, countTodos)
                 return
             }
             
-            completion(false, nil, 0)
+            completion(false, nil, nil)
         }
        
     }
